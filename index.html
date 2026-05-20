@@ -43,7 +43,7 @@
     box-shadow: 0 2px 16px rgba(0,0,0,0.3);
   }
   .header-inner {
-    max-width: 1100px;
+    max-width: 1400px;
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -128,7 +128,7 @@
     opacity: 0.06;
     border-radius: 50%;
   }
-  .hero-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-inner { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
   .hero h1 {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 42px;
@@ -177,7 +177,7 @@
     padding: 0 32px;
   }
   .progress-bar-inner {
-    max-width: 1100px;
+    max-width: 1400px;
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -199,7 +199,10 @@
   .step-label.done { color: var(--blue-light); border-bottom-color: var(--blue-light); }
 
   /* ── MAIN LAYOUT ── */
-  .main { max-width: 1100px; margin: 0 auto; padding: 32px; }
+  .main { max-width: 1400px; margin: 0 auto; padding: 24px 20px; }
+  .header-inner { max-width: 1400px; }
+  .hero-inner { max-width: 1400px; }
+  .progress-bar-inner { max-width: 1400px; }
 
   /* ── CARDS ── */
   .card {
@@ -359,7 +362,8 @@
   table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: 12px;
+    table-layout: fixed;
   }
   thead tr {
     background: var(--navy-dark);
@@ -387,17 +391,19 @@
   tbody tr:hover { background: #f0f5fc; }
 
   td {
-    padding: 6px 6px;
+    padding: 4px 4px;
     vertical-align: top;
   }
   td input, td select, td textarea {
-    padding: 7px 8px;
-    font-size: 13px;
+    padding: 5px 6px;
+    font-size: 12px;
     border: 1px solid var(--gray-200);
     border-radius: 3px;
     background: white;
+    width: 100%;
+    box-sizing: border-box;
   }
-  td input[type="number"] { width: 80px; text-align: right; }
+  td input[type="number"] { width: 100%; text-align: right; }
   td .annual-calc {
     font-weight: 700;
     color: var(--blue);
@@ -964,17 +970,17 @@
         <table id="taskTable">
           <thead>
             <tr>
-              <th style="width:36px">#</th>
-              <th style="min-width:140px">Function <span style="color:var(--orange)">*</span></th>
-              <th style="min-width:160px">Process <span style="color:var(--orange)">*</span></th>
-              <th style="min-width:120px">Role</th>
-              <th style="min-width:200px">Activity Description <span style="color:var(--orange)">*</span></th>
-              <th style="min-width:120px">Person Responsible</th>
-              <th style="min-width:160px">Purpose of Task</th>
-              <th style="min-width:110px">Frequency <span style="color:var(--orange)">*</span></th>
-              <th style="min-width:80px">Hrs / Freq <span style="color:var(--orange)">*</span></th>
-              <th class="accent" style="min-width:80px">Annual Hrs</th>
-              <th style="width:40px"></th>
+              <th style="width:28px">#</th>
+              <th style="width:11%">Function <span style="color:var(--orange)">*</span></th>
+              <th style="width:13%">Process <span style="color:var(--orange)">*</span></th>
+              <th style="width:10%">Role</th>
+              <th style="width:18%">Activity Description <span style="color:var(--orange)">*</span></th>
+              <th style="width:10%">Person Responsible</th>
+              <th style="width:14%">Purpose of Task</th>
+              <th style="width:9%">Frequency <span style="color:var(--orange)">*</span></th>
+              <th style="width:7%">Hrs / Freq <span style="color:var(--orange)">*</span></th>
+              <th class="accent" style="width:7%">Annual Hrs</th>
+              <th style="width:28px"></th>
             </tr>
           </thead>
           <tbody id="taskBody"></tbody>
@@ -1148,7 +1154,7 @@ function goToTab(tabId) {
 
 // ── POWER AUTOMATE ENDPOINT ────────────────────────────────────────────
 // Paste your Power Automate HTTP trigger URL here after setup:
-const POWER_AUTOMATE_URL = 'https://default1f283b9c581e4fe4b18452a37214d5.1e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/415cc0fe272848fdacb0ceee2c684781/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=qwQ8uLay959q2x6loiFFefWuKdojWJWoPMwXDgAynYw';
+const POWER_AUTOMATE_URL = '';
 
 // ── SUBMIT ─────────────────────────────────────────────────────────────
 async function submitForm() {
@@ -1268,32 +1274,32 @@ function addRow() {
   tr.innerHTML = `
     <td><div class="row-num">${tbody.rows.length + 1}</div></td>
     <td>
-      <select onchange="updateProcessDropdown(${rid})" id="func_${rid}" style="min-width:130px">
+      <select onchange="updateProcessDropdown(${rid})" id="func_${rid}">
         <option value="">Select...</option>
         ${Object.keys(FUNCTIONS).map(f=>`<option>${f}</option>`).join('')}
       </select>
     </td>
     <td>
-      <select id="proc_${rid}" style="min-width:150px">
+      <select id="proc_${rid}">
         <option value="">Select function first</option>
       </select>
     </td>
     <td>
-      <select id="role_${rid}" style="min-width:110px">
+      <select id="role_${rid}">
         <option value="">Select...</option>
         ${ROLES.map(r=>`<option>${r}</option>`).join('')}
       </select>
     </td>
-    <td><textarea id="desc_${rid}" rows="2" style="min-width:180px;font-size:12px" placeholder="Brief description of task..."></textarea></td>
-    <td><input type="text" id="person_${rid}" placeholder="Name" value="${document.getElementById('respName')?.value || ''}" style="min-width:110px"/></td>
-    <td><textarea id="purpose_${rid}" rows="2" style="min-width:140px;font-size:12px" placeholder="Why is this done?"></textarea></td>
+    <td><textarea id="desc_${rid}" rows="2" style="font-size:12px;width:100%" placeholder="Brief description..."></textarea></td>
+    <td><input type="text" id="person_${rid}" placeholder="Name" value="${document.getElementById('respName')?.value || ''}"/></td>
+    <td><textarea id="purpose_${rid}" rows="2" style="font-size:12px;width:100%" placeholder="Why is this done?"></textarea></td>
     <td>
-      <select id="freq_${rid}" onchange="calcAnnual(${rid})" style="min-width:100px">
+      <select id="freq_${rid}" onchange="calcAnnual(${rid})">
         <option value="">Select...</option>
         ${FREQUENCIES.map(f=>`<option>${f}</option>`).join('')}
       </select>
     </td>
-    <td><input type="number" id="hrs_${rid}" min="0" step="0.25" placeholder="0.0" oninput="calcAnnual(${rid})" style="width:70px"/></td>
+    <td><input type="number" id="hrs_${rid}" min="0" step="0.25" placeholder="0.0" oninput="calcAnnual(${rid})"/></td>
     <td><span class="annual-calc" id="annual_${rid}">—</span></td>
     <td><button class="btn-danger" onclick="removeRow(${rid})" title="Remove row">✕</button></td>
   `;
