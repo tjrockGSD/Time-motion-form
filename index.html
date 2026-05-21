@@ -1154,7 +1154,7 @@ function goToTab(tabId) {
 
 // ── POWER AUTOMATE ENDPOINT ────────────────────────────────────────────
 // Paste your Power Automate HTTP trigger URL here after setup:
-const POWER_AUTOMATE_URL = 'https://default1f283b9c581e4fe4b18452a37214d5.1e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/af5cfc519d264f00968e0d78b9374732/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=x4I5XG2gJIabcoTmcYng7UWULIHaQdyYqUtvxZalPLo';
+const POWER_AUTOMATE_URL = '';
 
 // ── SUBMIT ─────────────────────────────────────────────────────────────
 async function submitForm() {
@@ -1195,7 +1195,7 @@ async function submitForm() {
       period: meta.period,
       emp_type: meta.empType,
       location: meta.location,
-      task_count: tasks.length,
+      task_count: String(tasks.length),
       total_annual_hours: document.getElementById('sumHours').textContent,
       notes: meta.notes,
       submitted_at: meta.submittedAt,
