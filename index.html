@@ -914,11 +914,11 @@
           </div>
           <div class="instr-item">
             <div class="instr-num">3</div>
-            <div class="instr-text"><strong>Role:</strong> Indicate if you are <em>Preparing/Processing</em> or <em>Reviewing/Approving</em> this task.</div>
+            <div class="instr-text"><strong>Activity:</strong> Select the specific activity within that process (e.g., Finance → Accounts Payable → Invoice Approval Routing).</div>
           </div>
           <div class="instr-item">
             <div class="instr-num">4</div>
-            <div class="instr-text"><strong>Activity Description:</strong> Briefly describe what the task entails and what output or outcome it produces.</div>
+            <div class="instr-text"><strong>Role:</strong> Indicate if you are <em>Preparing/Processing</em> or <em>Reviewing/Approving</em> this task.</div>
           </div>
           <div class="instr-item">
             <div class="instr-num">5</div>
@@ -971,15 +971,16 @@
           <thead>
             <tr>
               <th style="width:28px">#</th>
-              <th style="width:11%">Function <span style="color:var(--orange)">*</span></th>
-              <th style="width:13%">Process <span style="color:var(--orange)">*</span></th>
-              <th style="width:10%">Role</th>
-              <th style="width:18%">Activity Description <span style="color:var(--orange)">*</span></th>
-              <th style="width:10%">Person Responsible</th>
-              <th style="width:14%">Purpose of Task</th>
-              <th style="width:9%">Frequency <span style="color:var(--orange)">*</span></th>
-              <th style="width:7%">Hrs / Freq <span style="color:var(--orange)">*</span></th>
-              <th class="accent" style="width:7%">Annual Hrs</th>
+              <th style="width:9%">Function <span style="color:var(--orange)">*</span></th>
+              <th style="width:11%">Process <span style="color:var(--orange)">*</span></th>
+              <th style="width:11%">Activity <span style="color:var(--orange)">*</span></th>
+              <th style="width:8%">Role</th>
+              <th style="width:16%">Activity Description <span style="color:var(--orange)">*</span></th>
+              <th style="width:9%">Person Responsible</th>
+              <th style="width:12%">Purpose of Task</th>
+              <th style="width:8%">Frequency <span style="color:var(--orange)">*</span></th>
+              <th style="width:6%">Hrs / Freq <span style="color:var(--orange)">*</span></th>
+              <th class="accent" style="width:6%">Annual Hrs</th>
               <th style="width:28px"></th>
             </tr>
           </thead>
@@ -1107,26 +1108,182 @@
 
 <script>
 // ── DATA: Functions & Processes ──────────────────────────────────────────
-const FUNCTIONS = {
-  "Finance": ["Account Reconciliation","Accounts Payable","Accounts Receivable","AP Processing","AP Helpdesk","Audit Support","Budgeting","Cash Flow Analysis","CIP Reporting","Close Process","Consolidations","Cost Accounting","Credit & Collections","Depreciation","Fixed Asset Inventory","Forecasting","FP&A","General Accounting","Intercompany","Invoice Dispute Management","Invoicing","Journal Entries","Lease Accounting","Ledger Account Maintenance","Mailroom","Month-End Analytics","Payment Processing","Physical Inventory","Project Accounting","Reporting","Revenue Accounting","Revenue Recognition","Review & Analysis","Scanning","Standard/Cost Roll","Statement Review","Statutory Audit","T&E Audit/Processing","Validations","Variance Analysis","Vendor Setup","Other"],
-  "Tax": ["Tax Planning","Tax Filing","Tax Support","Tax Compliance","Transfer Pricing","Sales & Use Tax","Property Tax","International Tax","Provision/ASC 740","Tax Research","Audit Defense","Lease Accounting","Accounting/JEs","Other"],
-  "Treasury": ["Bank Management","Cash Forecasting","Cash Management","Debt Management","FX Risk Management","Insurance Claims","Intercompany Settlements","Investment Management","Letter of Credit","Liquidity Planning","Other","Reporting","Risk Management","Other"],
-  "Payroll": ["Timekeeping","Payroll Processing","Payroll Support","Tax Filing","Garnishments","Accounting/JEs","Benefits Deductions","Year-End W2/1099","Off-Cycle Payments","Other"],
-  "HR / People": ["Benefits Administration","Compensation & Benefits","Demand Forecasting","Employee Master Data","Employee Relations","HR Helpdesk","Internal Training Development","Job Design","HRIS Administration","Offboarding","Onboarding","Performance Management","Policy Development","Recruitment","Reporting","Succession Planning","Termination/Retirement","Workforce Management","Other"],
-  "IT / Technology": ["Application Management","Architecture & Design","Asset Management","Business Intelligence","Change Management","Cybersecurity","Data Management","Governance","Help Desk / Support","Infrastructure","IT Procurement","License Management","Network Management","Project Management","Reporting","Service Level Management","Software Development","Systems Integration","Vendor Management","Other"],
-  "Procurement": ["Contract Management","Contract Release","Expense Management","Lease Management","Manage Local Suppliers","P-Card/USE","Purchase Order Processing","Reporting","RFP/RFQ","Source Local Suppliers","Spend Analysis","Strategic Sourcing","Supplier Onboarding","Vendor Management","Work Authorization","Other"],
-  "Supply Chain": ["Demand Planning","Freight & Logistics","Inbound Receiving","Inventory Control","Order Management","Production Planning","Quality Control","Returns Processing","S&OP","Supplier Management","Warehouse Management","Other"],
-  "Operations": ["Administrative","Facilities Management","Fleet Management","KPI Reporting","Meetings","Operational Reporting","Process Improvement","Project Management","Quality Assurance","Standard Operating Procedures","Other"],
-  "Sales / Revenue": ["Account Management","Business Development","CRM Administration","Commission Calculations","Contract Review","Customer Onboarding","Deal Desk","Forecasting","Invoicing","Pipeline Management","Pricing","Proposal Development","Reporting","Revenue Recognition","Sales Operations","Other"],
-  "Marketing": ["Brand Management","Campaign Management","Content Creation","Digital Marketing","Email Marketing","Events","Market Research","Reporting","SEO/SEM","Social Media","Other"],
-  "Customer Service": ["Case Management","Customer Communications","Customer Onboarding","Escalation Management","Knowledge Base","Order Support","Quality Assurance","Reporting","Returns/Refunds","SLA Management","Other"],
-  "Legal / Compliance": ["Administrative","Compliance Monitoring","Contract Drafting","Contract Review","Corporate Governance","HR Support","Intellectual Property","Invoices","Litigation","Major Transactions","Mediation","Policy","Regulatory Filings","Reporting","Risk Assessment","Vendor/Customer Agreements","Other"],
-  "HSE / Safety": ["Administrative","Communications","Compliance Reporting","Environmental Reporting","Health Programs","Incident Investigation","Incident Reporting","Major Initiatives","Meetings","Other","Regulatory Filings","Risk Assessments","Safety Training","Other"],
-  "MDM / Data": ["Customer Master","Employee Master","Ledger Account Maintenance","Other","Product Master","Reporting","Vendor Master"],
-  "Real Estate / Facilities": ["Facilities Management","Lease Administration","Lease Accounting","Property Management","Space Planning","Other"],
-  "Strategy / Corporate Dev": ["Benchmarking","Business Case Development","Due Diligence","Integration Management","M&A Analysis","Reporting","Scenario Planning","Other"],
-  "Other": ["Administrative Support","Meeting Support","Project Support","Reporting","Training","Other"]
+const TAXONOMY = {
+  "Finance": {
+    "Accounts Payable": ["Invoice Receipt & Logging","Invoice Coding & Allocation","Invoice Approval Routing","3-Way PO Matching","Exception / Hold Resolution","Invoice Dispute Management","Vendor Statement Reconciliation","Payment Run Preparation","Payment Approval","Payment Execution (ACH/Check/Wire)","Early Payment Discount Review","AP Aging Review","Month-End AP Accruals","AP Helpdesk / Vendor Inquiries","Vendor Setup & Maintenance","Other"],
+    "Accounts Receivable": ["Customer Invoice Generation","Invoice Delivery & Distribution","Cash Application","Deductions Management","Collections Outreach","Credit Review & Approval","Credit Hold Management","AR Aging Review","Bad Debt Reserve Calculation","Month-End AR Accruals","Customer Account Reconciliation","Dispute Resolution","Lockbox Processing","Other"],
+    "Account Reconciliation": ["Bank Reconciliation","Balance Sheet Account Reconciliation","Intercompany Reconciliation","Subledger to GL Reconciliation","Reconciliation Review & Sign-Off","Reconciliation Exception Resolution","Other"],
+    "General Accounting / Close": ["Journal Entry Preparation","Journal Entry Review & Approval","Accruals & Prepaid Entries","Month-End Close Checklist Management","Trial Balance Review","Financial Statement Preparation","Consolidation Entries","Intercompany Eliminations","Close Calendar Management","Post-Close Variance Review","Other"],
+    "Fixed Assets": ["Asset Addition & Capitalization","Asset Disposal & Retirement","Depreciation Run & Review","CIP Tracking & Reclassification","Physical Inventory / Asset Tagging","Fixed Asset Reconciliation","Lease vs. Buy Analysis","Other"],
+    "Budgeting & Forecasting": ["Annual Budget Preparation","Budget Template Distribution","Budget Data Collection & Consolidation","Budget vs. Actual Variance Analysis","Rolling Forecast Update","Scenario Planning & Modeling","Capital Expenditure Planning","Headcount Planning","Other"],
+    "FP&A / Reporting": ["Management Reporting Package","Board / Executive Reporting","KPI Dashboard Maintenance","Ad-Hoc Financial Analysis","Business Unit Performance Review","Cost Center Reporting","Revenue Reporting","Margin Analysis","Benchmarking","Other"],
+    "Cost Accounting": ["Standard Cost Development","Cost Roll-Up / BOM Maintenance","Manufacturing Variance Analysis","Overhead Allocation","Inventory Valuation","Cost of Goods Sold Analysis","Other"],
+    "Revenue Accounting": ["Revenue Recognition (ASC 606)","Contract Review for Revenue","Deferred Revenue Scheduling","Revenue Reconciliation","Commission Accounting","Royalty Accounting","Other"],
+    "Audit & Compliance": ["External Audit Support","Internal Audit Coordination","SOX Control Documentation","SOX Testing & Evidence Gathering","Audit Findings Remediation","Policy & Procedure Maintenance","Other"],
+    "T&E Management": ["Expense Report Review","Expense Coding Audit","Policy Compliance Check","Expense Approval Routing","Reimbursement Processing","Corporate Card Reconciliation","Other"],
+    "Other Finance": ["Other"]
+  },
+  "Tax": {
+    "Income Tax Compliance": ["Federal Tax Return Preparation","State & Local Tax Return Preparation","Tax Return Review & Sign-Off","Extension Filing","Estimated Tax Payment Calculation","Tax Payment Processing","E-Filing Submission","Other"],
+    "Tax Provision (ASC 740)": ["Current Tax Provision Calculation","Deferred Tax Calculation","Effective Tax Rate Analysis","Uncertain Tax Position Review","Provision to Return True-Up","Quarterly Provision Update","Other"],
+    "Sales & Use Tax": ["Nexus Review & Registration","Sales Tax Return Preparation","Use Tax Accrual","Exemption Certificate Management","Tax Rate Table Maintenance","Audit Defense","Other"],
+    "Transfer Pricing": ["Intercompany Agreement Maintenance","Transfer Pricing Study","Benchmarking Analysis","Documentation Preparation","Country-by-Country Reporting","Other"],
+    "Property Tax": ["Asset Listing Preparation","Return Filing","Assessment Review & Appeal","Payment Processing","Other"],
+    "International Tax": ["Foreign Tax Credit Computation","GILTI / BEAT / FDII Analysis","Treaty Position Review","VAT / GST Compliance","FBAR & Form 5471 Filing","Other"],
+    "Tax Research & Planning": ["Tax Law Research","Legislative Monitoring","Planning Memo Preparation","M&A Due Diligence","Restructuring Analysis","Other"],
+    "Other Tax": ["Other"]
+  },
+  "Treasury": {
+    "Cash Management": ["Daily Cash Position Reporting","Bank Account Reconciliation","Cash Concentration & Sweeping","Intercompany Cash Settlement","Petty Cash / Imprest Management","Other"],
+    "Cash Forecasting": ["Short-Term Cash Forecast","Long-Term Liquidity Forecast","Forecast vs. Actual Variance Analysis","Scenario / Stress Testing","Other"],
+    "Bank & Account Management": ["Bank Account Opening / Closing","Authorized Signatory Updates","Bank Fee Analysis","Banking Relationship Management","Other"],
+    "Debt & Capital Markets": ["Debt Covenant Compliance Monitoring","Interest & Debt Schedule Maintenance","Loan Drawdown / Repayment Processing","Credit Facility Management","Debt Reporting","Other"],
+    "Foreign Exchange": ["FX Exposure Identification","FX Hedge Program Management","FX Trade Execution","MTM Valuation & Accounting","FX Reporting","Other"],
+    "Investment Management": ["Investment Policy Compliance","Portfolio Monitoring","Trade Settlement","Investment Reporting","Other"],
+    "Insurance": ["Policy Renewal & Negotiation","Certificate of Insurance Issuance","Claims Filing & Tracking","Risk Assessment Support","Other"],
+    "Other Treasury": ["Other"]
+  },
+  "Payroll": {
+    "Payroll Processing": ["Timekeeping Data Collection & Review","Payroll Data Entry & Maintenance","Off-Cycle Payroll Processing","Gross-to-Net Calculation Review","Final Payroll Approval","Direct Deposit / Check Issuance","Payroll Register Review","Other"],
+    "Tax & Compliance": ["Payroll Tax Deposit","941 / State Withholding Filing","W-2 / W-2c Preparation & Distribution","1099 Preparation","New Hire Reporting","Garnishment Processing & Remittance","Other"],
+    "Benefits & Deductions": ["Benefits Deduction Setup","Benefits Reconciliation","COBRA Administration","FSA / HSA Administration","401(k) Contribution Remittance","Other"],
+    "Payroll Accounting": ["Payroll Journal Entry","Payroll Accrual","Payroll Account Reconciliation","Payroll Reporting to Finance","Other"],
+    "Employee Inquiries": ["Payroll Helpdesk / Employee Questions","Pay Stub Research","Correction & Adjustment Processing","Other"],
+    "Other Payroll": ["Other"]
+  },
+  "HR / People": {
+    "Recruitment": ["Job Description Development","Job Posting & Advertising","Resume Screening","Interview Scheduling","Interview Facilitation","Offer Letter Preparation","Background Check Coordination","Applicant Tracking System (ATS) Maintenance","Agency / Recruiter Management","Other"],
+    "Onboarding": ["Pre-Day-One Setup (IT, Facilities)","New Hire Orientation","Paperwork & I-9 Completion","Systems Access Provisioning","30/60/90 Day Check-In","Buddy / Mentor Assignment","Other"],
+    "Offboarding & Terminations": ["Resignation / Termination Processing","Exit Interview","Final Paycheck Coordination","Benefits Termination","Systems Access Revocation","Equipment Return","Other"],
+    "Performance Management": ["Goal Setting & Alignment","Mid-Year Check-In","Annual Review Coordination","Performance Improvement Plan (PIP) Administration","Calibration Sessions","Other"],
+    "Compensation & Benefits": ["Salary Survey Participation","Merit Increase Processing","Bonus Calculation & Administration","Benefits Enrollment & Open Enrollment","Benefits Vendor Management","Total Rewards Reporting","Other"],
+    "Employee Relations": ["Employee Complaint Investigation","Disciplinary Action Documentation","Policy Interpretation & Guidance","Conflict Mediation","HR Business Partner Advising","Other"],
+    "Training & Development": ["Training Needs Assessment","Course Development / Curation","Training Scheduling & Logistics","LMS Administration","Training Completion Tracking","Other"],
+    "HR Operations & Systems": ["HRIS Data Entry & Maintenance","Employee File Management","HR Reporting & Analytics","Org Chart Maintenance","Headcount Reporting","Compliance Reporting (EEO, OSHA)","Other"],
+    "Other HR": ["Other"]
+  },
+  "IT / Technology": {
+    "Help Desk / Support": ["Tier 1 Ticket Resolution","Tier 2 Escalation Handling","Password Reset & Access Issues","Hardware Deployment & Imaging","Software Installation","Ticket Queue Management","User Satisfaction Follow-Up","Other"],
+    "Infrastructure & Operations": ["Server Monitoring & Maintenance","Network Administration","Backup & Recovery Operations","Patch Management","Capacity Planning","Data Center / Cloud Management","Incident Response","Other"],
+    "Application Management": ["Application Monitoring","Release & Deployment Management","Bug Triage & Escalation","User Acceptance Testing (UAT)","Vendor / SaaS Management","License Compliance","Other"],
+    "Cybersecurity": ["Vulnerability Scanning & Remediation","Security Incident Response","User Access Review & Certification","Security Awareness Training","Firewall & Endpoint Management","Compliance Reporting (SOC 2, ISO)","Other"],
+    "Software Development": ["Requirements Gathering","Solution Design","Development / Coding","Code Review","QA Testing","Deployment & Release","Documentation","Other"],
+    "Data & Analytics": ["Data Pipeline Maintenance","Dashboard & Report Development","Data Quality Monitoring","Master Data Management","Analytics Request Fulfillment","Other"],
+    "Project & Change Management": ["Project Planning & Scheduling","Stakeholder Communication","Status Reporting","Change Request Management","Go-Live Support","Post-Implementation Review","Other"],
+    "IT Procurement & Vendors": ["RFP / RFQ Preparation","Vendor Evaluation","Contract Negotiation Support","Purchase Requisition","Vendor Performance Review","Other"],
+    "Other IT": ["Other"]
+  },
+  "Procurement": {
+    "Strategic Sourcing": ["Spend Analysis","Category Strategy Development","RFP / RFQ Issuance","Bid Evaluation & Scoring","Supplier Negotiation","Award Decision & Communication","Other"],
+    "Contract Management": ["Contract Drafting","Contract Review & Redline","Contract Approval Routing","Contract Execution & Filing","Contract Renewal Tracking","Contract Amendment Processing","Compliance Monitoring","Other"],
+    "Purchase Order Management": ["Purchase Requisition Review","PO Creation & Issuance","PO Change Order Processing","PO Receipt Confirmation","PO Matching & Closure","Other"],
+    "Supplier Management": ["Supplier Onboarding & Setup","Supplier Performance Scorecard","Supplier Risk Assessment","Supplier Relationship Management","Supplier Corrective Action","Other"],
+    "Expense & P-Card Management": ["P-Card Issuance & Maintenance","P-Card Transaction Review","Policy Compliance Audit","Expense Report Processing","Reconciliation to GL","Other"],
+    "Procurement Operations": ["Catalog & Pricing Maintenance","Procurement System Administration","Savings Tracking & Reporting","Policy Development & Training","Other"],
+    "Other Procurement": ["Other"]
+  },
+  "Supply Chain": {
+    "Demand Planning": ["Statistical Forecast Generation","Forecast Adjustment & Collaboration","Consensus Demand Review","Forecast Accuracy Reporting","New Product Introduction Planning","Other"],
+    "Supply Planning": ["Production Schedule Development","Material Requirements Planning (MRP)","Capacity Planning","Supply vs. Demand Gap Analysis","Supplier Order Placement","Other"],
+    "S&OP": ["S&OP Data Preparation","Pre-S&OP Meeting Facilitation","Executive S&OP Meeting","Action Item Tracking","KPI Reporting","Other"],
+    "Inventory Management": ["Cycle Count Coordination","Inventory Accuracy Reporting","Slow-Moving / Obsolete Review","Safety Stock Review","Inventory Adjustments","Other"],
+    "Warehouse & Logistics": ["Inbound Receiving & Putaway","Order Picking & Packing","Outbound Shipment Processing","Carrier Scheduling","Freight Invoice Audit","Returns Processing","Other"],
+    "Order Management": ["Order Entry & Acknowledgment","Order Status Updates","Expedite Management","Backorder Communication","Order Fulfillment Reconciliation","Other"],
+    "Quality Management": ["Incoming Quality Inspection","Non-Conformance Reporting","Supplier Quality Audits","CAPA Management","Quality Metrics Reporting","Other"],
+    "Other Supply Chain": ["Other"]
+  },
+  "Operations": {
+    "Operational Reporting": ["Daily / Weekly Operations Report","KPI Dashboard Update","Root Cause Analysis Reporting","Performance Review Preparation","Other"],
+    "Process Improvement": ["Process Mapping & Documentation","Waste / Inefficiency Identification","Improvement Project Management","Standard Work Development","Kaizen / Continuous Improvement Events","Other"],
+    "Facilities Management": ["Work Order Management","Preventive Maintenance Scheduling","Space Planning & Allocation","Vendor Coordination (Janitorial, Security)","Safety Inspection","Other"],
+    "Fleet Management": ["Vehicle Scheduling & Dispatch","Fleet Maintenance Coordination","Driver Log Review","Fuel Management","Fleet Cost Reporting","Other"],
+    "Project Management": ["Project Initiation & Charter","Project Plan Development","Status Reporting","Risk & Issue Management","Budget Tracking","Stakeholder Updates","Other"],
+    "Administrative": ["Calendar & Meeting Management","Travel Coordination","Document Management","Mail & Correspondence","Office Supply Management","Other"],
+    "Other Operations": ["Other"]
+  },
+  "Sales / Revenue": {
+    "Account Management": ["Account Plan Development","QBR / Business Review Preparation","Renewal Management","Upsell / Cross-Sell Opportunity Identification","Customer Health Monitoring","Other"],
+    "Business Development": ["Prospect Research","Outbound Outreach","Discovery Call Facilitation","Lead Qualification","Pipeline Entry & Tracking","Other"],
+    "Deal Desk & Pricing": ["Quote Preparation","Pricing Approval","Deal Structuring","Contract Red-line Review","Non-Standard Term Approval","Other"],
+    "Sales Operations": ["CRM Data Entry & Hygiene","Sales Reporting & Analytics","Territory & Quota Management","Commission Calculation & Reporting","Sales Forecast Review","Comp Plan Administration","Other"],
+    "Customer Onboarding": ["Welcome & Kickoff Coordination","Implementation Project Management","Training Delivery","Success Milestone Tracking","Handoff to Customer Success","Other"],
+    "Revenue Operations": ["Revenue Forecast Consolidation","Pipeline Review Facilitation","Win/Loss Analysis","Revenue Reporting","Booking Reconciliation","Other"],
+    "Other Sales": ["Other"]
+  },
+  "Marketing": {
+    "Campaign Management": ["Campaign Strategy & Planning","Creative Brief Development","Campaign Execution","Budget Management","Campaign Performance Reporting","A/B Testing","Other"],
+    "Content Creation": ["Blog / Article Writing","Case Study Development","White Paper / eBook Production","Video Scripting & Production","Infographic Design","Content Calendar Management","Other"],
+    "Digital Marketing": ["SEO Optimization","SEM / Paid Search Management","Display & Programmatic Advertising","Landing Page Optimization","Web Analytics Review","Other"],
+    "Social Media": ["Content Scheduling & Posting","Community Engagement","Social Listening & Monitoring","Influencer Coordination","Social Analytics Reporting","Other"],
+    "Events": ["Event Planning & Logistics","Speaker / Sponsor Coordination","Registration Management","On-Site Event Execution","Post-Event Follow-Up","Other"],
+    "Brand Management": ["Brand Guideline Maintenance","Brand Review & Approval","Competitive Positioning Review","Market Research","Other"],
+    "Marketing Operations": ["Marketing Automation Management","CRM / MAP Integration","Lead Scoring & Routing","Marketing Reporting & Attribution","Database Hygiene","Other"],
+    "Other Marketing": ["Other"]
+  },
+  "Customer Service": {
+    "Case Management": ["Case Intake & Triage","Case Investigation","Case Resolution & Closure","Escalation Management","Case Documentation","SLA Monitoring","Other"],
+    "Customer Communications": ["Inbound Phone Support","Email Response Management","Live Chat Support","Proactive Customer Outreach","Customer Survey Distribution","Other"],
+    "Returns & Refunds": ["Return Authorization","Return Receipt & Inspection","Refund / Credit Processing","Replacement Order Processing","Return Reporting","Other"],
+    "Knowledge Management": ["Knowledge Base Article Creation","Article Review & Updates","FAQ Maintenance","Agent Training Material Development","Other"],
+    "Quality & Compliance": ["Call / Ticket Quality Monitoring","Coaching & Feedback Delivery","Compliance Audit","CSAT / NPS Tracking","Other"],
+    "Customer Onboarding": ["Welcome Communication","Account Setup Assistance","Product / Service Training","First-Use Success Check","Other"],
+    "Other Customer Service": ["Other"]
+  },
+  "Legal / Compliance": {
+    "Contract Management": ["Contract Drafting","Contract Review & Negotiation","NDA Management","Contract Execution & Storage","Contract Renewal Tracking","Other"],
+    "Corporate Governance": ["Board Meeting Preparation","Board Minutes & Resolutions","Entity Maintenance","Subsidiary Management","Other"],
+    "Regulatory Compliance": ["Regulatory Filing Preparation","License & Permit Renewal","Regulatory Change Monitoring","Compliance Training Administration","Other"],
+    "Litigation & Disputes": ["Litigation Hold Management","Discovery Support","Outside Counsel Management","Settlement Review","Other"],
+    "Intellectual Property": ["Trademark Filing & Maintenance","Patent Portfolio Management","IP Watch & Monitoring","Licensing Agreement Review","Other"],
+    "Data Privacy": ["Privacy Policy Maintenance","GDPR / CCPA Compliance Review","Data Subject Request Handling","Privacy Impact Assessment","Other"],
+    "Risk Management": ["Enterprise Risk Assessment","Risk Register Maintenance","Internal Control Review","Audit Support","Other"],
+    "Other Legal": ["Other"]
+  },
+  "HSE / Safety": {
+    "Safety Programs": ["Safety Policy Development","Safety Training Delivery","Job Hazard Analysis (JHA)","Safety Walk / Inspection","Lockout/Tagout (LOTO) Compliance","PPE Management","Other"],
+    "Incident Management": ["Incident Reporting","Incident Investigation","Root Cause Analysis","Corrective Action Tracking","OSHA Recordkeeping","Other"],
+    "Environmental Reporting": ["Environmental Permit Management","Emissions / Waste Reporting","Environmental Audit Support","Regulatory Submission","Other"],
+    "Health & Wellness": ["Occupational Health Program Administration","Drug & Alcohol Testing Coordination","Return-to-Work Program","Employee Wellness Initiatives","Other"],
+    "Emergency Preparedness": ["Emergency Response Plan Development","Drill Coordination & Execution","Crisis Communication","Business Continuity Planning","Other"],
+    "Compliance & Audits": ["Regulatory Compliance Monitoring","Third-Party Audit Coordination","Internal HSE Audit","Findings Remediation Tracking","Other"],
+    "Other HSE": ["Other"]
+  },
+  "MDM / Data": {
+    "Customer Master": ["New Customer Record Creation","Customer Data Update & Enrichment","Duplicate Detection & Merge","Customer Data Quality Review","Other"],
+    "Vendor Master": ["New Vendor Setup","Vendor Data Update","Vendor Deactivation","Vendor Data Quality Review","Other"],
+    "Employee Master": ["New Employee Record Setup","Employee Data Update","Org Hierarchy Maintenance","Employee Data Quality Review","Other"],
+    "Product / Item Master": ["New Product Record Creation","Product Data Update","Product Hierarchy Maintenance","Product Data Quality Review","SKU Rationalization","Other"],
+    "GL / Chart of Accounts": ["New Account Setup","Account Mapping & Hierarchy","Account Deactivation","Chart of Accounts Review","Other"],
+    "Data Governance": ["Data Quality Monitoring & Reporting","Data Standards Development","Data Stewardship Activities","MDM System Administration","Other"],
+    "Other MDM": ["Other"]
+  },
+  "Real Estate / Facilities": {
+    "Lease Administration": ["Lease Abstraction","Critical Date Tracking","Rent Payment Processing","Lease Renewal / Termination Negotiation","Landlord Communication","Other"],
+    "Lease Accounting (ASC 842)": ["Lease Commencement Accounting","ROU Asset & Liability Calculation","Monthly Lease Amortization","Lease Modification Accounting","Lease Portfolio Reporting","Other"],
+    "Facilities Operations": ["Work Order Management","Preventive Maintenance Scheduling","Vendor Coordination","Building Access Management","Other"],
+    "Space Planning": ["Space Utilization Analysis","Floor Plan Maintenance","Move / Add / Change Coordination","Occupancy Reporting","Other"],
+    "Capital Projects": ["Project Initiation & Budgeting","Contractor Bid & Selection","Project Progress Monitoring","Invoice Review & Approval","Project Close-Out","Other"],
+    "Other Real Estate": ["Other"]
+  },
+  "Strategy / Corporate Dev": {
+    "Strategic Planning": ["Market & Competitive Research","Strategic Initiative Development","Business Case Preparation","Long-Range Planning","Scenario Modeling","Executive Presentation Development","Other"],
+    "M&A / Due Diligence": ["Target Identification & Screening","Financial Due Diligence","Operational Due Diligence","LOI / Term Sheet Review","Data Room Management","Integration Planning","Other"],
+    "Post-Merger Integration": ["Integration Workstream Management","Synergy Tracking","Change Management Support","Systems Integration Coordination","Integration Reporting","Other"],
+    "Performance Management": ["KPI Framework Development","Balanced Scorecard Maintenance","Business Review Preparation","Benchmarking Analysis","Other"],
+    "Other Strategy": ["Other"]
+  },
+  "Other": {
+    "General Administrative": ["Calendar & Scheduling","Meeting Preparation & Notes","Travel Arrangement","Document Filing & Management","Other"],
+    "Project Support": ["Project Coordination","Status Reporting","Action Item Tracking","Stakeholder Communication","Other"],
+    "Training & Development": ["Training Delivery","Training Material Preparation","Training Tracking & Reporting","Other"],
+    "Other": ["Other"]
+  }
 };
+
+// Helpers to extract function names and process names
+function getFunctions() { return Object.keys(TAXONOMY); }
+function getProcesses(fn) { return fn && TAXONOMY[fn] ? Object.keys(TAXONOMY[fn]) : []; }
+function getActivities(fn, proc) { return fn && proc && TAXONOMY[fn]?.[proc] ? TAXONOMY[fn][proc] : []; }
 
 const FREQUENCIES = ["Daily","Weekly","Bi-Weekly","Monthly","Quarterly","Semi-Annually","Annually","Ad-Hoc"];
 const FREQ_MULT = { "Daily":260, "Weekly":52, "Bi-Weekly":26, "Monthly":12, "Quarterly":4, "Semi-Annually":2, "Annually":1, "Ad-Hoc":1 };
@@ -1236,11 +1393,11 @@ async function submitForm() {
 }
 
 function buildCSV(meta, tasks) {
-  const headers = ['Task #','Name','Title','Email','Department','Company','Manager','Period','Emp Type','Location','Function','Process','Role','Activity Description','Person Responsible','Purpose of Task','Frequency','Hours/Frequency','Annual Hours','Notes','Submitted At'];
+  const headers = ['Task #','Name','Title','Email','Department','Company','Manager','Period','Emp Type','Location','Function','Process','Activity','Role','Activity Description','Person Responsible','Purpose of Task','Frequency','Hours/Frequency','Annual Hours','Notes','Submitted At'];
   const rows = tasks.map(t => [
     t.taskNum, meta.name, meta.title, meta.email, meta.dept, meta.company,
     meta.manager, meta.period, meta.empType, meta.location,
-    t.function, t.process, t.role, t.description, t.person, t.purpose,
+    t.function, t.process, t.activity, t.role, t.description, t.person, t.purpose,
     t.frequency, t.hoursPerFreq, t.annualHours,
     meta.notes, meta.submittedAt
   ]);
@@ -1276,12 +1433,17 @@ function addRow() {
     <td>
       <select onchange="updateProcessDropdown(${rid})" id="func_${rid}">
         <option value="">Select...</option>
-        ${Object.keys(FUNCTIONS).map(f=>`<option>${f}</option>`).join('')}
+        ${getFunctions().map(f=>`<option>${f}</option>`).join('')}
       </select>
     </td>
     <td>
-      <select id="proc_${rid}">
+      <select id="proc_${rid}" onchange="updateActivityDropdown(${rid})">
         <option value="">Select function first</option>
+      </select>
+    </td>
+    <td>
+      <select id="act_${rid}">
+        <option value="">Select process first</option>
       </select>
     </td>
     <td>
@@ -1311,11 +1473,27 @@ function addRow() {
 function updateProcessDropdown(rid) {
   const fn = document.getElementById('func_' + rid).value;
   const sel = document.getElementById('proc_' + rid);
+  const actSel = document.getElementById('act_' + rid);
   sel.innerHTML = '<option value="">Select...</option>';
-  if (fn && FUNCTIONS[fn]) {
-    FUNCTIONS[fn].forEach(p => {
+  actSel.innerHTML = '<option value="">Select process first</option>';
+  if (fn) {
+    getProcesses(fn).forEach(p => {
       const o = document.createElement('option');
       o.textContent = p;
+      sel.appendChild(o);
+    });
+  }
+}
+
+function updateActivityDropdown(rid) {
+  const fn = document.getElementById('func_' + rid).value;
+  const proc = document.getElementById('proc_' + rid).value;
+  const sel = document.getElementById('act_' + rid);
+  sel.innerHTML = '<option value="">Select...</option>';
+  if (fn && proc) {
+    getActivities(fn, proc).forEach(a => {
+      const o = document.createElement('option');
+      o.textContent = a;
       sel.appendChild(o);
     });
   }
@@ -1423,6 +1601,7 @@ function collectData() {
       taskNum: i + 1,
       function: document.getElementById('func_' + id)?.value || '',
       process: document.getElementById('proc_' + id)?.value || '',
+      activity: document.getElementById('act_' + id)?.value || '',
       role: document.getElementById('role_' + id)?.value || '',
       description: document.getElementById('desc_' + id)?.value || '',
       person: document.getElementById('person_' + id)?.value || '',
