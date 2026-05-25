@@ -885,7 +885,73 @@
     font-size: 11px;
     color: var(--gray-400);
   }
-  @keyframes shake {
+  /* ── SAVE / RESTORE ── */
+  .save-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--navy);
+    border-top: 2px solid var(--gold);
+    padding: 10px 24px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .save-banner-text {
+    font-size: 12px;
+    color: var(--gray-400);
+  }
+  .save-banner-text strong { color: var(--gold); }
+  .btn-save {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    border-radius: 4px;
+    color: var(--gold);
+    font-family: 'Barlow', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .btn-save:hover { background: var(--gold); color: var(--navy); }
+  .gate-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .gate-divider::before, .gate-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+  }
+  .gate-divider span { font-size: 11px; color: var(--gray-400); white-space: nowrap; }
+  .gate-restore-btn {
+    width: 100%;
+    padding: 10px;
+    background: transparent;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    color: var(--gray-400);
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .gate-restore-btn:hover { border-color: var(--blue); color: var(--blue-light); }
+  #restoreFileInput { display: none; }
     0%,100%{transform:translateX(0)}
     25%{transform:translateX(-6px)}
     75%{transform:translateX(6px)}
@@ -915,6 +981,11 @@
       </div>
       <div class="gate-error" id="gateError">Incorrect password. Please try again or contact your GSD Solutions representative.</div>
       <button class="gate-btn" onclick="checkPassword()">Access Assessment →</button>
+      <div class="gate-divider"><span>or resume saved progress</span></div>
+      <input type="file" id="restoreFileInput" accept=".gsd" onchange="restoreFromFile(event)" />
+      <button class="gate-restore-btn" onclick="document.getElementById('restoreFileInput').click()">
+        📂 Load Saved Progress File
+      </button>
       <div class="gate-footer">🔒 Protected by GSD Solutions &nbsp;·&nbsp; assessment@gsdsol.com</div>
     </div>
   </div>
@@ -1140,6 +1211,12 @@
           <div class="summary-lbl">Functions Covered</div>
         </div>
       </div>
+    </div>
+    <div class="save-banner">
+      <div class="save-banner-text">
+        <strong>💾 Save your progress</strong> — Download a save file you can reload later on any device to continue where you left off.
+      </div>
+      <button class="btn-save" onclick="saveProgress()">⬇ Save Progress File</button>
     </div>
     <div style="display:flex; justify-content:space-between; margin-top:16px;">
       <button class="btn btn-ghost" onclick="goToTab('instructions')">← Back</button>
@@ -1487,7 +1564,173 @@ function goToTab(tabId) {
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
-// ── POWER AUTOMATE ENDPOINT ────────────────────────────────────────────
+// ── SAVE / RESTORE PROGRESS ────────────────────────────────────────────
+function saveProgress() {
+  const { meta, tasks } = collectData();
+
+  // Also capture respondent form fields
+  const respondent = {
+    name: document.getElementById('respName').value,
+    title: document.getElementById('respTitle').value,
+    email: document.getElementById('respEmail').value,
+    dept: document.getElementById('respDept').value,
+    company: document.getElementById('respCompany').value,
+    manager: document.getElementById('respManager').value,
+    period: document.getElementById('respPeriod').value,
+    empType: document.getElementById('respType').value,
+    location: document.getElementById('respLocation').value
+  };
+
+  // Capture raw task row data including dropdown states
+  const rawTasks = [];
+  document.querySelectorAll('#taskBody tr').forEach(row => {
+    const id = row.id?.replace('row_','');
+    if (!id) return;
+    rawTasks.push({
+      func: document.getElementById('func_' + id)?.value || '',
+      proc: document.getElementById('proc_' + id)?.value || '',
+      act: document.getElementById('act_' + id)?.value || '',
+      role: document.getElementById('role_' + id)?.value || '',
+      desc: document.getElementById('desc_' + id)?.value || '',
+      person: document.getElementById('person_' + id)?.value || '',
+      purpose: document.getElementById('purpose_' + id)?.value || '',
+      freq: document.getElementById('freq_' + id)?.value || '',
+      hrs: document.getElementById('hrs_' + id)?.value || ''
+    });
+  });
+
+  const saveData = {
+    version: 1,
+    savedAt: new Date().toISOString(),
+    respondent,
+    tasks: rawTasks,
+    notes: document.getElementById('submitNotes')?.value || ''
+  };
+
+  const json = JSON.stringify(saveData, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const safeName = (respondent.company || 'GSD').replace(/[^a-z0-9]/gi, '_');
+  a.download = `GSD_SavedProgress_${safeName}_${new Date().toISOString().split('T')[0]}.gsd`;
+  a.click();
+  URL.revokeObjectURL(url);
+
+  showModal('success', 'Progress Saved!',
+    `Your progress has been saved as a .gsd file. To resume later:\n\n1. Go to the form URL\n2. Enter the password\n3. Click "Load Saved Progress File"\n4. Select your saved file\n\nAll your task entries, respondent info, and settings will be restored exactly as they are now.`
+  );
+}
+
+function restoreFromFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!data.version || !data.respondent) throw new Error('Invalid save file');
+
+      // Unlock the gate first
+      const overlay = document.getElementById('gateOverlay');
+      overlay.style.transition = 'opacity 0.4s';
+      overlay.style.opacity = '0';
+      setTimeout(() => overlay.style.display = 'none', 400);
+      sessionStorage.setItem('gsd_auth', '1');
+
+      // Wait for gate to close then restore
+      setTimeout(() => {
+        // Restore respondent fields
+        const r = data.respondent;
+        document.getElementById('respName').value = r.name || '';
+        document.getElementById('respTitle').value = r.title || '';
+        document.getElementById('respEmail').value = r.email || '';
+        document.getElementById('respDept').value = r.dept || '';
+        document.getElementById('respCompany').value = r.company || '';
+        document.getElementById('respManager').value = r.manager || '';
+        document.getElementById('respPeriod').value = r.period || '';
+        document.getElementById('respType').value = r.empType || '';
+        document.getElementById('respLocation').value = r.location || '';
+
+        // Clear existing rows
+        document.getElementById('taskBody').innerHTML = '';
+        rowCounter = 0;
+
+        // Restore task rows
+        data.tasks.forEach(t => {
+          addRow();
+          const rid = rowCounter;
+
+          // Set function and cascade
+          const funcEl = document.getElementById('func_' + rid);
+          if (funcEl) {
+            funcEl.value = t.func;
+            updateProcessDropdown(rid);
+          }
+
+          // Set process and cascade
+          setTimeout(() => {
+            const procEl = document.getElementById('proc_' + rid);
+            if (procEl) {
+              procEl.value = t.proc;
+              updateActivityDropdown(rid);
+            }
+
+            setTimeout(() => {
+              const actEl = document.getElementById('act_' + rid);
+              if (actEl) actEl.value = t.act;
+
+              const roleEl = document.getElementById('role_' + rid);
+              if (roleEl) roleEl.value = t.role;
+
+              const descEl = document.getElementById('desc_' + rid);
+              if (descEl) descEl.value = t.desc;
+
+              const personEl = document.getElementById('person_' + rid);
+              if (personEl) {
+                personEl.value = t.person;
+                personEl.dataset.manuallyEdited = '1';
+              }
+
+              const purposeEl = document.getElementById('purpose_' + rid);
+              if (purposeEl) purposeEl.value = t.purpose;
+
+              const freqEl = document.getElementById('freq_' + rid);
+              if (freqEl) freqEl.value = t.freq;
+
+              const hrsEl = document.getElementById('hrs_' + rid);
+              if (hrsEl) hrsEl.value = t.hrs;
+
+              calcAnnual(rid);
+            }, 50);
+          }, 50);
+        });
+
+        // Restore notes
+        if (document.getElementById('submitNotes')) {
+          document.getElementById('submitNotes').value = data.notes || '';
+        }
+
+        // Navigate to tasks tab
+        setTimeout(() => {
+          goToTab('tasks');
+          updateSummary();
+          showModal('success', 'Progress Restored!',
+            `Welcome back! Your saved progress from ${new Date(data.savedAt).toLocaleDateString()} has been fully restored — ${data.tasks.length} task rows loaded. Pick up right where you left off.`
+          );
+        }, data.tasks.length * 120 + 300);
+
+      }, 500);
+
+    } catch(err) {
+      showModal('error', 'Invalid Save File', 'This file could not be loaded. Please make sure you are using a .gsd save file generated by this form.');
+    }
+  };
+  reader.readAsText(file);
+  // Reset file input so same file can be loaded again if needed
+  event.target.value = '';
+}
 // Paste your Power Automate HTTP trigger URL here after setup:
 const POWER_AUTOMATE_URL = 'https://default1f283b9c581e4fe4b18452a37214d5.1e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/af5cfc519d264f00968e0d78b9374732/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=x4I5XG2gJIabcoTmcYng7UWULIHaQdyYqUtvxZalPLo';
 
